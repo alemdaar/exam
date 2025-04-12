@@ -93,16 +93,16 @@ void writeit (char **board, int nb, int *sign, int *sol)
 {
     int i;
     int j;
-	i = 0;
-	while (i < nb)
-	{
-		j = 0;
-		while (j < nb)
-			printf ("%c ", board[i][j++]);
-		printf ("\n");
-		i++;
-	}
-	printf ("\n");
+	// i = 0;
+	// while (i < nb)
+	// {
+	// 	j = 0;
+	// 	while (j < nb)
+	// 		printf ("%c ", board[i][j++]);
+	// 	printf ("\n");
+	// 	i++;
+	// }
+	// printf ("\n");
 	i = 0;
     while (i < nb)
     {
@@ -111,16 +111,16 @@ void writeit (char **board, int nb, int *sign, int *sol)
 		{
 			if (board[i][j] == '1')
 			{
-				printf ("%d", j);
+				printf ("%d,", j);
 				break;
 			}
 			j++;
 		}
 		i++;
     }
+	printf ("\n");
 	// [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
 	// [".Q..","...Q","Q...","..Q."],       ["..Q.","Q...","...Q",".Q.."]
-	printf ("\n");
 	// printf ("\nsign : %d\n", *sign);
 	// i = 0;
 	// if (*sign == 1)
@@ -293,63 +293,25 @@ int move_on(char **board, int line, int nb)
 
 void startit(char **board, int nb, int *sign, int *sol)
 {
-	myputstr("hna\n");
-	int i;
-	int j;
-	i = 0;
-	myputstr("line lowl : ");
-	myputstr (board[0]);
-	myputstr("\n\n");
-	// myputstr("\n");
-	while (i < nb)
+	// int i;
+	// int j;
+	// i = 0;
+	// while (i < nb)
+	// {
+	// 	myputstr (board[i]);
+	// 	myputstr ("\n");
+	// 	i++;
+	// }
+	// myputstr ("\n");
+	while (1)
 	{
-		myputstr (board[i]);
-		myputstr ("\n");
-		i++;
+		if (last_dance(board, nb))
+			return ;
+		is_valid(board, 0, nb, sign, sol);
+		if (move_on(board, 0, nb) == -1)
+			return ;
+    	// startit(board, nb, sign, sol);
 	}
-	myputstr ("\n");
-	if (last_dance(board, nb))
-		return ;
-	is_valid(board, 0, nb, sign, sol);
-	if (move_on(board, 0, nb) == -1)
-		return ;
-	myputstr("hna2\n");
-	myputstr("nb : ");
-	myputnbr(nb);
-	myputstr("\n");
-	myputstr("sign : ");
-	myputnbr(*sign);
-	myputstr("\n");
-	myputstr("sol : ");
-	myputnbr(*sol);
-	myputstr("\n");
-	// 		0 1 2 3 4 5 6
-
-	// 	0	0 0 1 0 0 0 0
-	// 	1	0 1 0 0 0 0 0
-	// 	2	1 0 0 0 0 0 0
-	// 	3	0 0 0 0 1 0 0
-	// 	4	0 0 0 0 0 1 0
-	// 	5	1 0 0 0 0 0 0
-	// 	6	0 1 0 0 0 0 0
-	if (board[0][3] == '1' && board[1][1] == '1' && board[2][0] == '1' && board[3][4] == '1' && board[4][5] == '1' && board[5][0] == '1' && board[6][1] == '1')
-	{
-		myputstr("came\n");
-		myputstr("last is : \n\n");
-		i = 0;
-		while (i < nb)
-		{
-			myputstr (board[i]);
-			myputstr ("\n");
-			i++;
-		}
-		myputstr ("\n");
-		// return ;
-	}
-	myputstr("came before \n");
-	if (board[0][3] == '1' && board[1][1] == '1' && board[2][0] == '1' && board[3][4] == '1' && board[4][5] == '1' && board[5][0] == '1' && board[6][1] == '1')
-		board = NULL;
-    startit(board, nb, sign, sol);
     return ;
 }
 
