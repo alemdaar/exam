@@ -89,7 +89,7 @@ int myatoi(char *str)
 	return nb * sign;
 }
 
-void writeit (char **board, int nb, int *sign, int *sol)
+void writeit (char **board, int nb, int *sol)
 {
     int i;
     int j;
@@ -103,65 +103,36 @@ void writeit (char **board, int nb, int *sign, int *sol)
 	// 	i++;
 	// }
 	// printf ("\n");
-	i = 0;
-    while (i < nb)
-    {
-		j = 0;
-		while (j < nb)
-		{
-			if (board[i][j] == '1')
-			{
-				printf ("%d,", j);
-				break;
-			}
-			j++;
-		}
-		i++;
-    }
-	printf ("\n");
-	// [[".Q..","...Q","Q...","..Q."],["..Q.","Q...","...Q",".Q.."]]
-	// [".Q..","...Q","Q...","..Q."],       ["..Q.","Q...","...Q",".Q.."]
-	// printf ("\nsign : %d\n", *sign);
 	// i = 0;
-	// if (*sign == 1)
-	// 	myputstr (",");
-	// myputstr ("[");
     // while (i < nb)
     // {
 	// 	j = 0;
 	// 	while (j < nb)
 	// 	{
-	// 		if (j == 0)
-	// 			myputstr ("\"");
 	// 		if (board[i][j] == '1')
-	// 			myputstr ("Q");
-	// 		else 
-	// 			myputstr (".");
-	// 		if (j == nb - 1)
-	// 			myputstr ("\"");
-	// 		// if (j == nb - 1)
-	// 		// 	printf (",");
+	// 		{
+	// 			printf ("%d,", j);
+	// 			break;
+	// 		}
 	// 		j++;
 	// 	}
-	// 	if (i < nb - 1)
-	// 		myputstr (",");
 	// 	i++;
     // }
-	// myputstr ("]");
-	*sign = 1;
-	*sol += 1;
-	// printf ("\nhello\n");
 	// printf ("\n");
+	*sol += 1;
+	myputnbr (*sol);
+	myputstr ("\n");
 	return; 
 }
 
-void is_valid(char **board, int start, int nb, int *sign, int *sol)
+void is_valid(char **board, int start, int nb, int *sol)
 {
 	int i;
 	int j;
 	if (start == nb)
 		return ;
 	int pos = 0;
+	// search for the index of the queens position for this line
 	while (pos < nb)
 	{
 		if (board[start][pos] == '1')
@@ -188,15 +159,11 @@ void is_valid(char **board, int start, int nb, int *sign, int *sol)
 	}
 	i = start;
 	j = pos;
-	// if (board[0][0] == '1' && board[1][2] == '1' && board[2][4] == '1' && board[3][1] == '1' && board[4][3] == '1' && board[5][5] == '1')
-	// {
-	// 	printf ("line : %s\n", board[start]);
-	// 	printf ("i : %d\n", i);
-	// 	printf ("nb : %d\n", nb);
-	// 	printf ("pos : %d\n", pos);
-	// 	printf ("start : %d\n", start);
-	// 	printf ("board[i][pos] : %c\n", board[i][pos]);
-	// }
+	// .
+	//  .
+	//   .
+	//    .
+	//     *
 	while (i < nb && j < nb)
 	{
 		if (i != start && j != pos && board[i][j] == '1')
@@ -206,6 +173,11 @@ void is_valid(char **board, int start, int nb, int *sign, int *sol)
 	}
 	i = start;
 	j = pos;
+	// *
+	//  .
+	//   .
+	//    .
+	//     .
 	while (i > -1 && j > -1)
 	{
 		if (i != start && j != pos && board[i][j] == '1')
@@ -215,6 +187,12 @@ void is_valid(char **board, int start, int nb, int *sign, int *sol)
 	}
 	i = start;
 	j = pos;
+	//      .
+	//     .
+	//    .
+	//   .
+	//  .
+	// *
 	while (i < nb && j > -1)
 	{
 		if (i != start && j != pos && board[i][j] == '1')
@@ -224,6 +202,12 @@ void is_valid(char **board, int start, int nb, int *sign, int *sol)
 	}
 	i = start;
 	j = pos;
+	//      *
+	//     .
+	//    .
+	//   .
+	//  .
+	// .
 	while (i > -1 && j < nb)
 	{
 		if (i != start && j != pos && board[i][j] == '1')
@@ -231,13 +215,14 @@ void is_valid(char **board, int start, int nb, int *sign, int *sol)
 		i--;
 		j++;
 	}
+	// increment the line only if its not the last line, otherwise it will reach writeit function
 	if (start + 1 < nb)
 	{
 		start ++;
-		is_valid(board, start, nb, sign, sol);
+		is_valid(board, start, nb, sol);
 		return ;
 	}
-	writeit(board, nb, sign, sol);
+	writeit(board, nb, sol);
 	return ;
 }
 
@@ -291,49 +276,42 @@ int move_on(char **board, int line, int nb)
 	return 1;
 }
 
-void startit(char **board, int nb, int *sign, int *sol)
+void startit(char **board, int nb, int *sol)
 {
-	// int i;
-	// int j;
-	// i = 0;
-	// while (i < nb)
-	// {
-	// 	myputstr (board[i]);
-	// 	myputstr ("\n");
-	// 	i++;
-	// }
-	// myputstr ("\n");
 	while (1)
 	{
 		if (last_dance(board, nb))
 			return ;
-		is_valid(board, 0, nb, sign, sol);
+		is_valid(board, 0, nb, sol);
 		if (move_on(board, 0, nb) == -1)
 			return ;
-    	// startit(board, nb, sign, sol);
 	}
     return ;
 }
 
+void set_up(char **board, int nb)
+{
+	int i = 0;
+    int j;
+    while (i < nb)
+    {
+        j = 0;
+        while (j < nb)
+		{
+			if (j == 0)
+				board[i][j++] = '1';
+			else
+				board[i][j++] = '0';
+		}
+        i ++;
+    }
+}
+
 int teenqueens(char *str)
 {
-	int *sol;
+	int sol;
 	int nb;
-	int *sign;
-	sign = malloc (sizeof(int));
-	if (!sign)
-	{
-		myputstr ("sign failed\n");
-		return 1;
-	}
-	*sign = 0;
-	sol = malloc (sizeof(int));
-	if (!sol)
-	{
-		myputstr ("sol failed\n");
-		return 1;
-	}
-	*sol = 0;
+	sol = 0;
     nb = myatoi(str);
 	if (nb < 0)
 	{
@@ -344,13 +322,11 @@ int teenqueens(char *str)
 	{
 		if (nb == 1)
 		{
-			// myputstr ("[[\"Q\"]]");
 			myputstr ("1\n");
 			return 1;
 		}
 		return 0;
 	}
-	// myputstr ("[");
 	int i = 0;
     char **board;
 	board = (char **) malloc (sizeof(char *) * (nb + 1));
@@ -370,25 +346,9 @@ int teenqueens(char *str)
 		i++;
 	}
 	board[i] = NULL;
-	i = 0;
-    int j;
-    while (i < nb)
-    {
-        j = 0;
-        while (j < nb)
-		{
-			if (j == 0)
-				board[i][j++] = '1';
-			else
-				board[i][j++] = '0';
-		}
-        i ++;
-    }
-	startit(board, nb, sign, sol);
-	// myputstr("hna\n");
-	// myputstr ("]");
-	int rtn = *sol;
-	return rtn;
+	set_up(board, nb);
+	startit(board, nb, &sol);
+	return sol;
 }
 
 char *gnl(int fd)
@@ -416,9 +376,7 @@ char *gnl(int fd)
             return NULL;
         }
         if (r == 0)
-        {
             break;
-        }
         readd[r] = 0;
         if (buffer)
             tmp = buffer;
@@ -459,14 +417,11 @@ int main ()
             return 1;
         
         solutions = teenqueens(str);
-		// myputstr ("\n[[\"..Q.\",\"Q...\",\"...Q\",\".Q..\"],[\".Q..\",\"...Q\",\"Q...\",\"..Q.\"]]");
 		if (solutions == -1)
 			return 1;
-        // printf ("%d", solutions);
         myputstr("\nsolutions are : ");
         myputnbr(solutions);
         myputstr("\n");
-		// printf ("came here \n");
     }
 
 }
