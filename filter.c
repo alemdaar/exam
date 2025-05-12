@@ -6,9 +6,7 @@
 int main(int ac , char **av)
 {
     if(ac != 2)
-    {
         return 1;
-    }
     char *word = av[1];
     int lenth_word = strlen(word);
     char *input = malloc(1);
